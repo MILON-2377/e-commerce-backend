@@ -1,0 +1,24 @@
+{
+  "name": "wellness-care-backend",
+  "version": "1.0.0",
+  "description": "wellness beauty care backend",
+  "type": "module",
+  "main": "nodemon src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "milon miah",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.1"
+  }
+}
