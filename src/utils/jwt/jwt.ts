@@ -22,7 +22,11 @@ export default class JWTUtils {
 
       return decoded as JwtPayload;
     } catch (error) {
-      throw new AppError(401, "Invalid access token");
+      const message = error instanceof Error ? error.message : "Unknown error";
+
+      throw AppError.badRequest("Invalid access token", {
+        details: { error: message },
+      });
     }
   };
 
@@ -32,7 +36,11 @@ export default class JWTUtils {
 
       return decoded as JwtPayload;
     } catch (error) {
-      throw new AppError(401, "Invalid refresh token");
+      const message = error instanceof Error ? error.message : "Unknown error";
+
+      throw AppError.badRequest("Invalid access token", {
+        details: { error: message },
+      });
     }
   };
 }

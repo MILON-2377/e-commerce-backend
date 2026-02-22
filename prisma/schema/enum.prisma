@@ -1,6 +1,5 @@
 
 enum UserRole {
-    SUPPER_ADMIN
     ADMIN
-    PATIENT
+    USER
 }
