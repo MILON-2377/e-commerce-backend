@@ -7,6 +7,7 @@ import {
   LogInInput,
   PasswordChangeInput,
   RegisterInput,
+  ResetPasswordInput,
 } from "./auth.validation";
 
 export default class AuthService {
@@ -259,6 +260,133 @@ export default class AuthService {
         "Verify email error",
         error instanceof Error ? error : undefined,
       );
+    }
+  };
+
+  public static forgetPassword = async (email: string) => {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        throw AppError.notFound("User not found");
+      }
+
+      if (!user.emailVerified) {
+        throw AppError.badRequest("Email not verified");
+      }
+
+      const result = await auth.api.requestPasswordResetEmailOTP({
+        body: {
+          email,
+        },
+      });
+
+      if (!result.success) {
+        throw AppError.badRequest("Failed to reset password");
+      }
+
+      return result;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      if (error?.message) {
+        throw AppError.badRequest(error.message);
+      }
+
+      throw AppError.internal("Failed to send reset password request ");
+    }
+  };
+
+  public static resetPassword = async (payload: ResetPasswordInput) => {
+    try {
+      const { email, otp, newPassword } = payload;
+
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user) {
+        throw AppError.notFound("User not found");
+      }
+
+      if (!user.emailVerified) {
+        throw AppError.badRequest("Email not verified");
+      }
+
+      await auth.api.resetPasswordEmailOTP({
+        body: {
+          email,
+          otp,
+          password: newPassword,
+        },
+      });
+
+      await prisma.session.deleteMany({
+        where: {
+          userId: user.id,
+        },
+      });
+    } catch (error: any) {
+      console.error("reset password service error: ", error);
+
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      if (error?.message) {
+        throw AppError.badRequest(error.message);
+      }
+
+      throw AppError.internal("Failed to reset password");
+    }
+  };
+
+  public static googleSignUp = async () => {
+    try {
+      await auth.api.signInSocial();
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      if (error?.message) {
+        throw AppError.badRequest(error.message);
+      }
+
+      throw AppError.internal(
+        "Failed to signup with google",
+        error instanceof Error ? error : undefined,
+      );
+    }
+  };
+
+  public static googleLoginSuccess = async (userId: string) => {
+    try {
+      const result = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      return result;
+    } catch (error: any) {
+      if (error instanceof AppError) {
+        throw error;
+      }
+
+      if (error?.message) {
+        throw AppError.badRequest(error.message);
+      }
+
+      throw AppError.internal("Failed to google login");
     }
   };
 }

@@ -21,7 +21,14 @@ export const VerifyEmailSchema = z.object({
   otp: z.string(),
 });
 
+export const ResetPasswordSchema = z.object({
+  email: z.email(),
+  otp: z.string().max(6, "Wrong otp"),
+  newPassword: z.string().min(8, "Password must be at least 8 characters"),
+});
+
 export type RegisterInput = z.infer<typeof RegisterSchema>;
 export type LogInInput = z.infer<typeof LogInSchema>;
 export type PasswordChangeInput = z.infer<typeof PasswordChangedSchema>;
 export type VerifyEmailInput = z.infer<typeof VerifyEmailSchema>;
+export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;

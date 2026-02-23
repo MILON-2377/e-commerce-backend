@@ -18,6 +18,14 @@ interface IConfig {
     EMAIL_SENDER_SMTP_PORT: string;
     EMAIL_SENDER_SMTP_FROM: string;
   };
+  GOOGLE_CREDENTIALS: {
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_CLIENT_SECRET: string;
+    GOOGLE_CALLBACK_URL: string;
+  };
+  BETTER_AUTH_URL: string;
+  BETTER_AUTH_SECRET: string;
+  FORNTEND_URL: string;
 }
 
 const loadEnvVariables = (): IConfig => {
@@ -34,6 +42,12 @@ const loadEnvVariables = (): IConfig => {
     "EMAIL_SENDER_SMTP_HOST",
     "EMAIL_SENDER_SMTP_PORT",
     "EMAIL_SENDER_SMTP_FROM",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CALLBACK_URL",
+    "BETTER_AUTH_URL",
+    "BETTER_AUTH_SECRET",
+    "FORNTEND_URL"
   ];
 
   configArray.forEach((key) => {
@@ -55,8 +69,16 @@ const loadEnvVariables = (): IConfig => {
       EMAIL_SENDER_SMTP_PASS: process.env.EMAIL_SENDER_SMTP_PASS as string,
       EMAIL_SENDER_SMTP_HOST: process.env.EMAIL_SENDER_SMTP_HOST as string,
       EMAIL_SENDER_SMTP_PORT: process.env.EMAIL_SENDER_SMTP_PORT as string,
-      EMAIL_SENDER_SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM as string
+      EMAIL_SENDER_SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM as string,
     },
+    GOOGLE_CREDENTIALS: {
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+      GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+      GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
+    },
+    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL as string,
+    BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET as string,
+    FORNTEND_URL: process.env.FORNTEND_URL as string,
   };
 };
 

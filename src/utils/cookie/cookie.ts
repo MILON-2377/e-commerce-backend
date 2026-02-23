@@ -11,34 +11,22 @@ const baseCookieOptions = {
 };
 
 export default class CookieUtils {
-  public static setAccessTokenCookie(
-    res: FastifyReply,
-    key: string,
-    value: string,
-  ) {
-    res.setCookie(key, value, {
+  public static setAccessTokenCookie(res: FastifyReply, value: string) {
+    res.setCookie(getConfig.ACCESS_TOKEN_COOKIE_NAME, value, {
       ...baseCookieOptions,
       maxAge: 60 * 60 * 24,
     });
   }
 
-  public static setRefreshTokenCookie(
-    res: FastifyReply,
-    key: string,
-    value: string,
-  ) {
-    res.setCookie(key, value, {
+  public static setRefreshTokenCookie(res: FastifyReply, value: string) {
+    res.setCookie(getConfig.REFRESH_TOKEN_COOKIE_NAME, value, {
       ...baseCookieOptions,
       maxAge: 60 * 60 * 24 * 7,
     });
   }
 
-  public static setSessionTokenCookie(
-    res: FastifyReply,
-    key: string,
-    value: string,
-  ) {
-    res.setCookie(key, value, {
+  public static setSessionTokenCookie(res: FastifyReply, value: string) {
+    res.setCookie(getConfig.SESSION_COOKIE_NAME, value, {
       ...baseCookieOptions,
       maxAge: 60 * 60 * 24,
     });

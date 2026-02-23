@@ -2,21 +2,11 @@ import { FastifyInstance } from "fastify";
 import AuthController from "./auth.controller";
 import Authentication from "../../middleware/authorization";
 
-//  * fastify.get(
-//   "/admin",
-//   {
-//     preHandler: [authenticate, authorize("ADMIN")],
-//   },
-//   async (req, reply) => {
-//     return { message: "Welcome Admin" };
-//   }
-// );
-
 export default function authRoutes(route: FastifyInstance) {
   route.post("/register", AuthController.register);
   route.post("/login", AuthController.loginUser);
   route.post(
-    "/forgot-password",
+    "/change-password",
     {
       preHandler: [
         Authentication.authenticate,
@@ -47,4 +37,11 @@ export default function authRoutes(route: FastifyInstance) {
     },
     AuthController.verifyEmail,
   );
+
+  route.post("/forget-password", AuthController.forgetPassword);
+
+  route.post("/reset-password", AuthController.resetPassword);
+
+  route.get("/login/google", AuthController.googleLogin);
+  route.get("/login/google/success", AuthController.googleLoginSuccess);
 }
