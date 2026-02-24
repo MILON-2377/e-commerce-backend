@@ -1,0 +1,16 @@
+model Asset {
+    id       String @id @default(uuid())
+    url      String
+    fileName String
+    size     Int
+    width    Int?
+    height   Int?
+
+    uploadedById String
+    uploadedBy   User   @relation(fields: [uploadedById], references: [id])
+
+    products Product[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

@@ -26,6 +26,11 @@ interface IConfig {
   BETTER_AUTH_URL: string;
   BETTER_AUTH_SECRET: string;
   FORNTEND_URL: string;
+  CLOUDINARY: {
+    API_KEY: string;
+    API_SECRET: string;
+    CLOUDINARY_NAME: string;
+  };
 }
 
 const loadEnvVariables = (): IConfig => {
@@ -47,7 +52,10 @@ const loadEnvVariables = (): IConfig => {
     "GOOGLE_CALLBACK_URL",
     "BETTER_AUTH_URL",
     "BETTER_AUTH_SECRET",
-    "FORNTEND_URL"
+    "FORNTEND_URL",
+    "CLOUDINARY_API_SECRET",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_CLOUD_NAME",
   ];
 
   configArray.forEach((key) => {
@@ -79,6 +87,11 @@ const loadEnvVariables = (): IConfig => {
     BETTER_AUTH_URL: process.env.BETTER_AUTH_URL as string,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET as string,
     FORNTEND_URL: process.env.FORNTEND_URL as string,
+    CLOUDINARY: {
+      API_KEY: process.env.CLOUDINARY_API_KEY as string,
+      API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+      CLOUDINARY_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    },
   };
 };
 

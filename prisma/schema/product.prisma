@@ -1,0 +1,29 @@
+model Product {
+    id          String @id @default(uuid())
+    name        String
+    slug        String @unique
+    description String
+
+    brand String?
+    sku   String? @unique
+
+    basePrice     Decimal  @db.Decimal(10, 2)
+    discountPrice Decimal? @db.Decimal(10, 2)
+
+    status ProductStatus @default(DRAFT)
+
+    categoryId String
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    imageId String?
+    image   Asset?  @relation(fields: [imageId], references: [id])
+
+    variants ProductVariant[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([categoryId])
+    @@index([imageId])
+    @@map("products")
+}

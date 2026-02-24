@@ -1,5 +1,11 @@
-
 enum UserRole {
     ADMIN
     USER
+}
+
+enum ProductStatus {
+    DRAFT
+    ACTIVE
+    INACTIVE
+    ARCHIVED
 }

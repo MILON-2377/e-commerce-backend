@@ -11,6 +11,8 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  assets Asset[]
+
   @@unique([email])
   @@map("user")
 }
