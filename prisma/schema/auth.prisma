@@ -12,6 +12,7 @@ model User {
   accounts      Account[]
 
   assets Asset[]
+  reviews Review[]
 
   @@unique([email])
   @@map("user")

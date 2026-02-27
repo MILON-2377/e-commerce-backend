@@ -1,16 +1,35 @@
 model Asset {
-    id       String @id @default(uuid())
+    id String @id @default(uuid())
+
     url      String
+    key      String
     fileName String
-    size     Int
-    width    Int?
-    height   Int?
+
+    mimeType String
+    type     AssetType
+
+    size   Int
+    width  Int?
+    height Int?
+
+    altText String?
+
+    storageProvider StorageProvider
+    isPublic        Boolean         @default(true)
+
+    checksum String?
+    metadata Json?
 
     uploadedById String
     uploadedBy   User   @relation(fields: [uploadedById], references: [id])
 
-    products Product[]
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+    products        Product[]
+    productVariants ProductVariant[]
+    categories      Category[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    @@index([type])
+    @@index([storageProvider])
+    @@map("assets")
 }

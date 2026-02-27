@@ -1,18 +1,51 @@
 model Category {
-  id        String     @id @default(uuid())
-  name      String
-  slug      String     @unique
+  id   String @id @default(uuid())
+  name String
+  slug String @unique
 
+  description String?
 
-  parentId  String?
-  parent    Category? @relation("CategoryTree", fields: [parentId], references: [id])
-  children  Category[] @relation("CategoryTree")
+  parentId String?
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
 
-  products  Product[]
+  sortOrder Int     @default(0)
+  isActive  Boolean @default(true)
 
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  imageId String?
+  image   Asset?  @relation(fields: [imageId], references: [id])
+
+  seoTitle       String?
+  seoDescription String?
+
+  productCount Int @default(0)
+
+  products   Product[]
+  attributes CategoryAttribute[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([parentId])
+  @@index([slug])
+  @@index([isActive])
   @@map("categories")
+}
+
+
+
+model CategoryAttribute {
+    id String @id @default(uuid())
+
+    categoryId String
+    category   Category @relation(fields: [categoryId], references: [id])
+
+    attributeId String
+    attribute   Attribute @relation(fields: [attributeId], references: [id])
+
+    isRequired   Boolean @default(false)
+    isFilterable Boolean @default(true)
+
+    @@unique([categoryId, attributeId])
+    @@map("category_attributes")
 }

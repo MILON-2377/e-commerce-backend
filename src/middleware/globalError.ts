@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FastifyError, FastifyReply, FastifyRequest } from "fastify";
 import AppError from "../utils/AppError";
 import sendError from "../utils/sendError";
@@ -7,7 +8,7 @@ export default function globalError(
   _req: FastifyRequest,
   reply: FastifyReply,
 ) {
-  // AppError (already normalized)
+  // ✅ Handle AppError
   if (error instanceof AppError) {
     return sendError(reply, error.statusCode, {
       message: error.message,
@@ -16,7 +17,7 @@ export default function globalError(
     });
   }
 
-  // Validation errors
+  // ✅ Handle Zod or validation errors
   if ("validation" in error && error.validation) {
     return sendError(reply, 422, {
       message: "Validation failed",
@@ -25,24 +26,36 @@ export default function globalError(
     });
   }
 
-  // Prisma errors → convert to AppError
+  // ✅ Handle Prisma errors
+  // Prisma errors have `code` like 'P2002', 'P2025', etc.
   if (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    typeof (error as any)?.code === "string" &&
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    "code" in error &&
+    typeof (error as any).code === "string" &&
     (error as any).code.startsWith("P")
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const prismaCode = (error as any).code;
+    const prismaError = error as any;
+    let message = "Database error";
+
+    // Optional: customize messages for common Prisma errors
+    switch (prismaError.code) {
+      case "P2002":
+        message = "Unique constraint failed";
+        break;
+      case "P2025":
+        message = "Record not found";
+        break;
+      default:
+        message = prismaError.message || "Database error";
+    }
 
     return sendError(reply, 400, {
-      message: "Database error",
+      message,
       code: "DATABASE_ERROR",
-      details: { prismaCode },
+      details: { prismaCode: prismaError.code, meta: prismaError.meta || null },
     });
   }
 
-  // Unknown errors
+  // ✅ Fallback for unknown errors
   console.error("🔥 UNHANDLED ERROR:", error);
 
   return sendError(reply, 500, {

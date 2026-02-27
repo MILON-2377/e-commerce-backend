@@ -1,10 +1,9 @@
-import dns from "dns";
-dns.setDefaultResultOrder('ipv4first')
+
 
 import { prisma } from "./lib/prisma";
 import createApp from "./app";
 import { transporter } from "./config/mail.config";
-import cloudinary from "./config/cloudinary.config";
+// import cloudinary from "./config/cloudinary.config";
 
 const app = createApp();
 
@@ -21,8 +20,8 @@ const start = async () => {
       }
     });
 
-    const ping = await cloudinary.api.ping();
-    console.log("Cloudinary connected", ping);
+    // const ping = await cloudinary.api.ping();
+    // console.log("Cloudinary connected", ping);
 
     await app.listen({ port: 5000, host: "0.0.0.0" });
     console.log("Server is running on port: ", 5000);

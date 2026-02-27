@@ -37,10 +37,7 @@ export default class AppError extends Error {
    * Static factory helpers
    * ========================= */
 
-  static notFound(
-    message = "Resource not found",
-    details?: unknown,
-  ) {
+  static notFound(message = "Resource not found", details?: unknown) {
     return new AppError(message, {
       statusCode: 404,
       code: "NOT_FOUND",
@@ -48,10 +45,7 @@ export default class AppError extends Error {
     });
   }
 
-  static badRequest(
-    message = "Bad request",
-    details?: unknown,
-  ) {
+  static badRequest(message = "Bad request", details?: unknown) {
     return new AppError(message, {
       statusCode: 400,
       code: "BAD_REQUEST",
@@ -73,10 +67,7 @@ export default class AppError extends Error {
     });
   }
 
-  static conflict(
-    message = "Conflict",
-    details?: unknown,
-  ) {
+  static conflict(message = "Conflict", details?: unknown) {
     return new AppError(message, {
       statusCode: 409,
       code: "CONFLICT",
@@ -84,13 +75,24 @@ export default class AppError extends Error {
     });
   }
 
-  static internal(
-    message = "Internal server error",
-    cause?: Error,
-  ) {
+  static internal(message = "Internal server error", cause?: Error) {
     return new AppError(message, {
       statusCode: 500,
       code: "INTERNAL_ERROR",
+      cause,
+      isOperational: false,
+    });
+  }
+
+  static custom(
+    statusCode: number,
+    message: string,
+    code = "CUSTOM_ERROR",
+    cause?: Error,
+  ) {
+    return new AppError(message, {
+      statusCode,
+      code,
       cause,
       isOperational: false,
     });

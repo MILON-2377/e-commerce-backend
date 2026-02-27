@@ -9,3 +9,38 @@ enum ProductStatus {
     INACTIVE
     ARCHIVED
 }
+
+
+enum VariantStatus {
+    ACTIVE
+    DISABLED
+    OUT_OF_STOCK
+}
+
+
+enum AttributeType {
+  TEXT     
+  NUMBER   
+  SELECT   
+  BOOLEAN  
+}
+
+
+enum AssetType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+enum StorageProvider {
+  LOCAL
+  S3
+  CLOUDINARY
+}
+
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

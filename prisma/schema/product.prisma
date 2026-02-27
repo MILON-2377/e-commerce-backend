@@ -1,16 +1,26 @@
 model Product {
-    id          String @id @default(uuid())
-    name        String
-    slug        String @unique
-    description String
+    id   String @id @default(uuid())
+    name String
+    slug String @unique
+
+    shortDescription String?
+    description      String
 
     brand String?
-    sku   String? @unique
 
-    basePrice     Decimal  @db.Decimal(10, 2)
+    priceRange    Decimal  @db.Decimal(10, 2)
     discountPrice Decimal? @db.Decimal(10, 2)
 
-    status ProductStatus @default(DRAFT)
+    rating      Decimal? @db.Decimal(2, 1)
+    reviewCount Int      @default(0)
+
+    isFeatured Boolean @default(false)
+
+    status      ProductStatus @default(DRAFT)
+    publishedAt DateTime?
+
+    seoTitle       String?
+    seoDescription String?
 
     categoryId String
     category   Category @relation(fields: [categoryId], references: [id])
@@ -19,11 +29,15 @@ model Product {
     image   Asset?  @relation(fields: [imageId], references: [id])
 
     variants ProductVariant[]
+    reviews  Review[]
+
+    metadata Json?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@index([categoryId])
-    @@index([imageId])
+    @@index([status])
+    @@index([slug])
     @@map("products")
 }
